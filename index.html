@@ -461,6 +461,36 @@ font-size: 2rem;
   width: 100%;
   border-radius: 10px;
 }
+
+.photo-block {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--panel);
+  border-radius: 15px;
+  border: 1px solid var(--border);
+}
+
+.photo-block h3 {
+  margin-bottom: 15px;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.photo-grid img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  height: 120px;
+  transition: 0.3s;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -522,6 +552,11 @@ Je suis actuellement en BTS SIO et ce portfolio me permet de mettre en valeur mo
           <div class="line output" id="terminalDynamic">Chargement du cursus BTS SIO et des projets scolaires...</div>
 </div>
 </div>
+<div class="photo-block reveal">
+  <h3>Quelque réalisations</h3>
+  <div class="photo-grid">
+    <img src="images/bash-1.jpg" alt="bash">
+  </div>
 </div>
 </header>
 
