@@ -492,6 +492,29 @@ font-size: 2rem;
   margin-top: 10px;
   color: #a9b9d3;
 }
+  .ecole-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  align-items: center;
+}
+
+.ecole-img img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+}
+
+.ecole-content h3 {
+  margin-bottom: 10px;
+}
+
+/* Responsive (mobile) */
+@media (max-width: 900px) {
+  .ecole-container {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -667,34 +690,37 @@ J'ai pour objectif après ma formation, de poursuivre vers une license ou un bac
       </div>
     </div>
 
-    <div class="card reveal">
-      
+    <div class="ecole-container reveal">
+
       <!-- IMAGE -->
       <div class="ecole-img">
         <img src="images/ecole.jpg" alt="CFA INSTA">
       </div>
 
-      <h3>CFA INSTA</h3>
-      <p>
-        Je suis actuellement étudiant en BTS SIO option SISR au CFA INSTA.
-        Cette formation me permet d’apprendre l’administration système,
-        les réseaux et le support informatique à travers des travaux pratiques.
-      </p>
+      <!-- TEXTE -->
+      <div class="ecole-content">
+        <h3>CFA INSTA</h3>
+        <p>
+          Je suis étudiant en BTS SIO option SISR au CFA INSTA.
+          Cette formation me permet d’apprendre l’administration système,
+          les réseaux et le support informatique à travers des travaux pratiques.
+        </p>
 
-      <div class="about-list">
-        <div class="about-item">
-          <h3>Formation</h3>
-          <p>BTS SIO option SISR.</p>
-        </div>
+        <div class="about-list">
+          <div class="about-item">
+            <h3>Formation</h3>
+            <p>BTS SIO option SISR.</p>
+          </div>
 
-        <div class="about-item">
-          <h3>Outils utilisés</h3>
-          <p>Linux, Packet Tracer, machines virtuelles et outils réseau.</p>
-        </div>
+          <div class="about-item">
+            <h3>Outils utilisés</h3>
+            <p>Linux, Packet Tracer, machines virtuelles et outils réseau.</p>
+          </div>
 
-        <div class="about-item">
-          <h3>Objectif</h3>
-          <p>Développer mes compétences pour travailler dans les systèmes et réseaux.</p>
+          <div class="about-item">
+            <h3>Objectif</h3>
+            <p>Travailler dans les systèmes et réseaux.</p>
+          </div>
         </div>
       </div>
 
