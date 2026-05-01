@@ -506,5 +506,11 @@ font-size: 2rem;
 @media (max-width: 900px) {
   .ecole-container {
     grid-template-columns: 1fr;
+}
+.project-img {
+  width: 60%;
+  display: block;
+  margin: 20px auto;
+  border-radius: 10px;
   }
 }
