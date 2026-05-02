@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant de diagnostic système et réseau</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .window {
+      max-width: 750px;
+      margin: auto;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    }
+
+    .titlebar {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .dots { display: flex; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+
+    .titlebar-label {
+      font-size: 12px;
+      color: #8b949e;
+      flex: 1;
+      text-align: center;
+    }
+
+    .body {
+      background: #0d1117;
+      padding: 30px 32px 36px;
+    }
+
+    .prompt {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 6px;
+    }
+    .prompt .user { color: #3fb950; }
+    .prompt .path { color: #79c0ff; }
+
+    h1 {
+      font-size: 20px;
+      color: #f0f6fc;
+      margin-bottom: 8px;
+    }
+    h1 span { color: #3fb950; }
+
+    .subtitle {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .input-label {
+      font-size: 12px;
+      color: #3fb950;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #c9d1d9;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: #3fb950; }
+    textarea::placeholder { color: #8b949e; }
+
+    button {
+      margin-top: 14px;
+      padding: 10px 22px;
+      background: #238636;
+      border: 1px solid #3fb950;
+      border-radius: 8px;
+      color: #f0f6fc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #3fb950;
+      color: #0d1117;
+      transform: translateY(-1px);
+    }
+
+    #resultat {
+      display: none;
+      margin-top: 24px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-left: 3px solid #3fb950;
+      border-radius: 8px;
+      padding: 20px;
+      white-space: pre-line;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #c9d1d9;
+      animation: fadein 0.3s ease;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #21262d;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #8b949e;
+    }
+
+    .footer a {
+      color: #79c0ff;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dots">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+    </div>
+    <div class="titlebar-label">assistant-diagnostic.sh — bash</div>
+  </div>
+
+  <div class="body">
+
+    <div class="prompt">
+      <span class="user">kahyl@DESKTOP-SIO</span>:<span class="path">~/outils</span>$ run assistant-diagnostic.sh
+    </div>
+
+    <h1><span>&gt;</span> Assistant de diagnostic système et réseau</h1>
+    <p class="subtitle">Décris un problème Linux ou réseau. L'assistant propose une piste de diagnostic.</p>
+
+    <div class="input-label">$ describe_problem --input</div>
+    <textarea id="question" placeholder="Exemple : je n'arrive pas à ping une machine..."></textarea>
+
+    <button onclick="analyser()">▶ Analyser</button>
+
+    <div id="resultat"></div>
+
+    <div class="footer">
+      <span>diagnostic-assistant v1.0 — BTS SIO SISR</span>
+      <a href="https://kahyl93.github.io/Portfolio/">← Retour au portfolio</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function analyser() {
+    const question = document.getElementById("question").value.toLowerCase();
+    const resultat = document.getElementById("resultat");
+
+    if (question.trim() === "") {
+      resultat.style.display = "block";
+      resultat.textContent = "Veuillez écrire un problème à analyser.";
+      return;
+    }
+
+    if (question.includes("ping") || question.includes("connectivité") || question.includes("injoignable")) {
+      resultat.textContent =
+`Problème détecté : connectivité réseau
+Catégorie : Réseau
+
+Commandes à tester :
+- ping 8.8.8.8          → teste la connexion internet
+- ping 192.168.1.1      → teste la connexion à la passerelle
+- ip addr               → affiche les interfaces et adresses IP
+- ip route              → affiche la table de routage
+- traceroute 8.8.8.8    → trace le chemin jusqu'à internet
+
+Pistes de diagnostic :
+1. Commencez par pinger la passerelle (192.168.1.1). Si ça ne répond pas, le problème est local.
+2. Si la passerelle répond mais pas 8.8.8.8, vérifiez le routage ou la connexion internet.
+3. Vérifiez que l'adresse IP, le masque et la passerelle sont correctement configurés.
+4. Si le ping vers une IP fonctionne mais pas vers un nom de domaine, le problème vient du DNS.`;
+
+    } else if (question.includes("dns") || question.includes("nom de domaine") || question.includes("nslookup")) {
+      resultat.textContent =
+`Problème détecté : résolution DNS
+Catégorie : Réseau / DNS
+
+Commandes à tester :
+- nslookup google.com         → teste la résolution DNS
+- dig google.com              → analyse détaillée du DNS
+- ping google.com             → teste avec un nom de domaine
+- ping 8.8.8.8                → teste avec une IP (sans DNS)
+- cat /etc/resolv.conf        → affiche les serveurs DNS configurés
+
+Pistes de diagnostic :
+1. Si ping 8.8.8.8 fonctionne mais pas ping google.com, le problème est DNS.
+2. Vérifiez le fichier /etc/resolv.conf : il doit contenir une ligne "nameserver X.X.X.X".
+3. Essayez de changer le DNS pour 8.8.8.8 (Google) ou 1.1.1.1 (Cloudflare).
+4. Sur Windows, videz le cache DNS avec : ipconfig /flushdns`;
+
+    } else if (question.includes("permission") || question.includes("denied") || question.includes("droits") || question.includes("chmod")) {
+      resultat.textContent =
+`Problème détecté : droits et permissions Linux
+Catégorie : Linux / Système
+
+Commandes à tester :
+- ls -l                       → affiche les droits des fichiers
+- ls -la                      → affiche aussi les fichiers cachés
+- chmod 755 fichier           → donne les droits rwxr-xr-x
+- chown utilisateur fichier   → change le propriétaire
+- id                          → affiche l'utilisateur courant et ses groupes
+- sudo commande               → exécute en tant qu'administrateur
+
+Pistes de diagnostic :
+1. Vérifiez qui est propriétaire du fichier avec ls -l.
+2. Les droits Linux se lisent ainsi : rwxrwxrwx (propriétaire / groupe / autres).
+3. Si vous obtenez "Permission denied", utilisez sudo ou changez les droits avec chmod.
+4. Pour rendre un script exécutable : chmod +x script.sh`;
+
+    } else if (question.includes("ssh") || question.includes("port 22") || question.includes("connexion ssh")) {
+      resultat.textContent =
+`Problème détecté : connexion SSH
+Catégorie : SSH / Réseau
+
+Commandes à tester :
+- systemctl status ssh         → vérifie si le service SSH tourne
+- systemctl start ssh          → démarre le service SSH
+- ping adresse_ip              → vérifie que la machine est joignable
+- ssh utilisateur@adresse_ip  → tente la connexion SSH
+- ssh -v utilisateur@ip        → mode verbose pour voir les détails
+- ss -tlnp | grep 22           → vérifie que le port 22 est ouvert
+
+Pistes de diagnostic :
+1. Vérifiez que le service SSH est actif avec systemctl status ssh.
+2. Assurez-vous que le port 22 n'est pas bloqué par un firewall.
+3. L'option -v dans la commande SSH affiche les étapes de connexion pour mieux diagnostiquer.
+4. Vérifiez le fichier /etc/ssh/sshd_config pour la configuration du serveur SSH.`;
+
+    } else if (question.includes("firewall") || question.includes("iptables") || question.includes("ufw") || question.includes("port bloqué")) {
+      resultat.textContent =
+`Problème détecté : règles firewall
+Catégorie : Sécurité / Réseau
+
+Commandes à tester :
+- ufw status                  → affiche l'état du firewall (Ubuntu)
+- ufw allow 22/tcp            → autorise le port SSH
+- ufw allow 80/tcp            → autorise le port HTTP
+- iptables -L -n              → liste toutes les règles iptables
+- iptables -F                 → vide toutes les règles (attention !)
+- firewall-cmd --list-all     → firewall sur CentOS/RedHat
+
+Pistes de diagnostic :
+1. Vérifiez si le firewall est actif et quelles règles sont en place.
+2. Un port bloqué empêche toute connexion même si le service tourne.
+3. Autorisez uniquement les ports nécessaires pour limiter les risques.
+4. Après modification des règles, retestez la connexion.`;
+
+    } else if (question.includes("dhcp") || question.includes("adresse automatique") || question.includes("ip automatique")) {
+      resultat.textContent =
+`Problème détecté : configuration DHCP
+Catégorie : Réseau / DHCP
+
+Commandes à tester :
+- dhclient -v eth0            → demande une IP au serveur DHCP
+- ip addr                     → vérifie l'adresse IP obtenue
+- journalctl -u networking    → affiche les logs réseau
+- cat /etc/network/interfaces → vérifie la config réseau (Debian)
+- nmcli device status         → état des interfaces réseau
+
+Pistes de diagnostic :
+1. Si aucune IP n'est attribuée, vérifiez que le serveur DHCP est actif sur le réseau.
+2. Assurez-vous que l'interface réseau est bien activée (ip link set eth0 up).
+3. Vérifiez qu'il n'y a pas de conflit d'adresses IP sur le réseau.
+4. Une IP en 169.254.x.x signifie que le DHCP n'a pas répondu (APIPA).`;
+
+    } else if (question.includes("bash") || question.includes("script") || question.includes("erreur script")) {
+      resultat.textContent =
+`Problème détecté : script Bash
+Catégorie : Linux / Scripting
+
+Commandes à tester :
+- bash -x script.sh           → exécute en mode debug (affiche chaque étape)
+- bash -n script.sh           → vérifie la syntaxe sans exécuter
+- chmod +x script.sh          → rend le script exécutable
+- echo $?                     → affiche le code de retour de la dernière commande
+- shellcheck script.sh        → outil d'analyse de scripts Bash
+
+Pistes de diagnostic :
+1. Utilisez bash -x pour voir exactement quelle ligne pose problème.
+2. Vérifiez la première ligne du script : elle doit commencer par #!/bin/bash
+3. Faites attention aux espaces dans les conditions : [ $var == "valeur" ] (espaces obligatoires).
+4. Un code de retour 0 signifie succès, tout autre code indique une erreur.`;
+
+    } else if (question.includes("ip") || question.includes("adresse ip") || question.includes("interface")) {
+      resultat.textContent =
+`Problème détecté : configuration IP
+Catégorie : Réseau / IP
+
+Commandes à tester :
+- ip addr                     → affiche toutes les interfaces et leurs IP
+- ip route                    → affiche la table de routage
+- ip link                     → affiche l'état des interfaces réseau
+- ipconfig /all               → affiche la config complète (Windows)
+- nmcli device show           → détails des interfaces (Linux)
+
+Pistes de diagnostic :
+1. Vérifiez que l'interface est bien active (état UP dans ip addr).
+2. Contrôlez l'adresse IP, le masque de sous-réseau et la passerelle.
+3. Une passerelle incorrecte empêche d'accéder à internet ou aux autres réseaux.
+4. Pour modifier une IP manuellement : ip addr add 192.168.1.10/24 dev eth0`;
+
+    } else if (question.includes("serveur") || question.includes("service") || question.includes("systemctl")) {
+      resultat.textContent =
+`Problème détecté : serveur ou service inaccessible
+Catégorie : Système / Services
+
+Commandes à tester :
+- systemctl status nom_service  → état du service
+- systemctl start nom_service   → démarre le service
+- systemctl restart nom_service → redémarre le service
+- journalctl -xe                → affiche les logs d'erreur système
+- netstat -tuln                 → liste les ports ouverts et services actifs
+- ping adresse_serveur          → vérifie que le serveur est joignable
+
+Pistes de diagnostic :
+1. Vérifiez d'abord si le service est actif avec systemctl status.
+2. Consultez les logs avec journalctl -xe pour trouver la cause de l'erreur.
+3. Assurez-vous que le port du service n'est pas bloqué par un firewall.
+4. Vérifiez que le serveur est bien joignable sur le réseau avant tout.`;
+
+    } else {
+      resultat.textContent =
+`Problème non reconnu précisément
+Catégorie : Général
+
+Commandes utiles pour commencer :
+- ping 8.8.8.8       → teste la connectivité réseau
+- ip addr            → affiche les adresses IP
+- ip route           → affiche le routage
+- ls -l              → vérifie les droits de fichiers
+- systemctl status   → vérifie l'état des services
+- journalctl -xe     → affiche les logs d'erreur
+
+Pistes de diagnostic :
+Commencez par identifier la source du problème :
+- Réseau ? → testez la connectivité avec ping
+- Système ? → vérifiez les logs avec journalctl
+- Droits ?  → contrôlez les permissions avec ls -l
+- Service ? → vérifiez son état avec systemctl status`;
+    }
+
+    resultat.style.display = "block";
+  }
+</script>
+
+</body>
+</html>
