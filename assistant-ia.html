@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant de diagnostic système et réseau</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2333;
+      --border: #30363d;
+      --green: #3fb950;
+      --green-dim: #238636;
+      --cyan: #79c0ff;
+      --yellow: #e3b341;
+      --red: #f85149;
+      --purple: #bc8cff;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --white: #f0f6fc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+      background-image: 
+        radial-gradient(ellipse at 20% 0%, rgba(63, 185, 80, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(121, 192, 255, 0.05) 0%, transparent 50%);
+    }
+
+    .terminal-window {
+      max-width: 780px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    /* Title bar */
+    .title-bar {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot.red   { background: #ff5f57; }
+    .dot.yellow{ background: #ffbd2e; }
+    .dot.green { background: #28c840; }
+
+    .title-bar-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      flex: 1;
+      text-align: center;
+    }
+
+    /* Content */
+    .content {
+      background: var(--bg);
+      padding: 28px 32px 32px;
+    }
+
+    .prompt-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .prompt-line span.user { color: var(--green); }
+    .prompt-line span.path { color: var(--cyan); }
+    .prompt-line span.sym  { color: var(--text-dim); }
+
+    h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    h1 span { color: var(--green); }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* Badges catégories */
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .badge.network { border-color: var(--cyan); color: var(--cyan); }
+    .badge.linux   { border-color: var(--green); color: var(--green); }
+    .badge.ssh     { border-color: var(--purple); color: var(--purple); }
+    .badge.server  { border-color: var(--yellow); color: var(--yellow); }
+    .badge:hover   { opacity: 0.7; transform: translateY(-1px); }
+
+    /* Input zone */
+    .input-group {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .input-prompt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 110px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.1);
+    }
+
+    textarea::placeholder { color: var(--text-dim); }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.analyse-btn {
+      background: var(--green-dim);
+      border: 1px solid var(--green);
+      color: var(--white);
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button.analyse-btn:hover {
+      background: var(--green);
+      color: var(--bg);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(63, 185, 80, 0.3);
+    }
+
+    button.clear-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button.clear-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* Result */
+    #resultat {
+      display: none;
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: 8px;
+      padding: 20px 22px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #resultat.error { border-left-color: var(--red); }
+    #resultat.warn  { border-left-color: var(--yellow); }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-icon {
+      font-size: 18px;
+    }
+
+    .result-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .result-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    .result-section {
+      margin-bottom: 14px;
+    }
+
+    .result-section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .cmd-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .cmd {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 6px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cmd::before {
+      content: '$';
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .piste-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+      border-radius: 5px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .content { padding: 20px 18px 24px; }
+      h1 { font-size: 16px; }
+      .categories { gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="terminal-window">
+  <div class="title-bar">
+    <div class="dots">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="title-bar-text">diagnostic-assistant — bash</div>
+  </div>
+
+  <div class="content">
+    <div class="prompt-line">
+      <span class="user">kahyl@DESKTOP-SIO</span><span class="sym">:</span><span class="path">~/outils</span><span class="sym">$</span> run assistant-diagnostic.sh
+    </div>
+
+    <h1><span>&gt;</span> Assistant de diagnostic<br>système &amp; réseau</h1>
+    <p class="subtitle">Décris ton problème Linux ou réseau. L'assistant analyse les mots-clés et propose des pistes de diagnostic avec les commandes adaptées.</p>
+
+    <div class="categories">
+      <span class="badge network" onclick="fillExample('ping')">📡 Réseau / Ping</span>
+      <span class="badge linux"   onclick="fillExample('dns')">🔍 DNS</span>
+      <span class="badge ssh"     onclick="fillExample('ssh')">🔐 SSH</span>
+      <span class="badge linux"   onclick="fillExample('permission')">🗂 Permissions</span>
+      <span class="badge server"  onclick="fillExample('serveur')">🖥 Serveur</span>
+      <span class="badge network" onclick="fillExample('ip')">🌐 Config IP</span>
+      <span class="badge linux"   onclick="fillExample('bash')">⚙️ Bash / Script</span>
+      <span class="badge server"  onclick="fillExample('firewall')">🛡 Firewall</span>
+    </div>
+
+    <div class="input-group">
+      <div class="input-prompt">$ describe_problem --input</div>
+      <textarea id="question" placeholder="Ex : je n'arrive pas à pinger ma machine, problème de DNS, connexion SSH refusée..."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="analyse-btn" onclick="analyser()">
+        <span>▶</span> Analyser
+      </button>
+      <button class="clear-btn" onclick="clearAll()">✕ Effacer</button>
+    </div>
+
+    <div id="resultat"></div>
+
+    <div class="footer">
+      <span>diagnostic-assistant v2.0 — BTS SIO SISR</span>
+      <a href="https://kahyl93.github.io/Portfolio/" target="_blank">← Retour au portfolio</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BASE = {
+    ping: {
+      icon: "📡",
+      title: "Problème détecté : connectivité réseau",
+      category: "Réseau",
+      cmds: ["ping 8.8.8.8", "ping 192.168.1.1", "ip addr", "ip route", "traceroute 8.8.8.8"],
+      piste: "Vérifiez l'adresse IP, le masque de sous-réseau et la passerelle par défaut. Si le ping vers une IP fonctionne mais pas vers un nom de domaine, le problème est probablement DNS. Testez aussi la connectivité vers la passerelle en premier."
+    },
+    dns: {
+      icon: "🔍",
+      title: "Problème détecté : résolution DNS",
+      category: "Réseau / DNS",
+      cmds: ["nslookup google.com", "dig google.com", "ping google.com", "ping 8.8.8.8", "cat /etc/resolv.conf"],
+      piste: "Si le ping vers 8.8.8.8 fonctionne mais pas vers google.com, le problème vient sûrement des serveurs DNS. Vérifiez le fichier /etc/resolv.conf et testez avec un serveur DNS public comme 8.8.8.8."
+    },
+    permission: {
+      icon: "🗂",
+      title: "Problème détecté : droits et permissions Linux",
+      category: "Linux / Droits",
+      cmds: ["ls -l", "ls -la", "chmod 755 fichier", "chown utilisateur fichier", "id", "sudo -l"],
+      piste: "Vérifiez les droits du fichier ou du dossier avec ls -l. L'utilisateur n'a peut-être pas les permissions nécessaires (lecture, écriture, exécution). Utilisez chmod pour modifier les droits ou chown pour changer le propriétaire."
+    },
+    ssh: {
+      icon: "🔐",
+      title: "Problème détecté : connexion SSH",
+      category: "SSH / Réseau",
+      cmds: ["systemctl status ssh", "ping adresse_ip", "ssh -v utilisateur@adresse_ip", "ss -tlnp | grep 22", "cat /etc/ssh/sshd_config"],
+      piste: "Vérifiez que le service SSH est actif (port 22), que l'adresse IP est correcte et que le firewall ne bloque pas le port. L'option -v dans la commande SSH affiche les détails de connexion pour mieux diagnostiquer."
+    },
+    ip: {
+      icon: "🌐",
+      title: "Problème détecté : configuration IP",
+      category: "Réseau / IP",
+      cmds: ["ip addr", "ip route", "ipconfig /all", "nmcli device show", "cat /etc/network/interfaces"],
+      piste: "Vérifiez l'adresse IP, le masque de sous-réseau, la passerelle et l'interface réseau utilisée. Assurez-vous que l'interface est bien activée et que la configuration est correcte."
+    },
+    serveur: {
+      icon: "🖥",
+      title: "Problème détecté : serveur inaccessible",
+      category: "Serveur / Service",
+      cmds: ["ping adresse_serveur", "systemctl status nom_service", "netstat -tuln", "ss -tlnp", "journalctl -xe"],
+      piste: "Vérifiez si le serveur est allumé et connecté au réseau. Contrôlez l'état du service concerné avec systemctl. Les logs avec journalctl peuvent révéler l'origine du problème."
+    },
+    bash: {
+      icon: "⚙️",
+      title: "Problème détecté : script Bash",
+      category: "Linux / Bash",
+      cmds: ["bash -x script.sh", "chmod +x script.sh", "shellcheck script.sh", "echo $?", "set -e"],
+      piste: "Utilisez bash -x pour exécuter le script en mode debug (affiche chaque commande). Vérifiez les droits d'exécution avec chmod +x. ShellCheck est un outil utile pour détecter les erreurs de syntaxe."
+    },
+    firewall: {
+      icon: "🛡",
+      title: "Problème détecté : règles firewall",
+      category: "Sécurité / Réseau",
+      cmds: ["iptables -L -n", "ufw status", "ufw allow 22/tcp", "firewall-cmd --list-all", "ss -tlnp"],
+      piste: "Le firewall bloque peut-être le port ou le service concerné. Vérifiez les règles actives avec iptables ou ufw selon votre distribution. Autorisez le port nécessaire et testez à nouveau."
+    },
+    default: {
+      icon: "❓",
+      title: "Problème non reconnu précisément",
+      category: "Général",
+      cmds: ["ping 8.8.8.8", "ip addr", "ip route", "ls -l", "systemctl status"],
+      piste: "Commencez par identifier si le problème vient du réseau, du système, des droits d'accès ou d'un service. Testez la connectivité réseau, vérifiez les logs système, puis affinez votre diagnostic."
+    }
+  };
+
+  const KEYWORDS = {
+    ping:       ["ping", "connectivité", "injoignable", "joindre", "réseau", "connexion réseau", "pas de réponse", "unreachable"],
+    dns:        ["dns", "nslookup", "résolution", "nom de domaine", "domaine", "dig"],
+    permission: ["permission", "denied", "droits", "access denied", "interdit", "chmod", "chown", "sudo"],
+    ssh:        ["ssh", "connexion ssh", "port 22", "openssh", "clé ssh"],
+    ip:         ["adresse ip", "config ip", "configuration ip", "interface réseau", "masque", "passerelle", "ipconfig", "ip addr"],
+    serveur:    ["serveur", "service", "inaccessible", "hors ligne", "down", "démarrer", "systemctl"],
+    bash:       ["bash", "script", "permission denied script", "sh:", "syntax error", "erreur script"],
+    firewall:   ["firewall", "iptables", "ufw", "bloqué", "filtrage", "port bloqué"]
+  };
+
+  function detectCategory(q) {
+    for (const [cat, words] of Object.entries(KEYWORDS)) {
+      if (words.some(w => q.includes(w))) return cat;
+    }
+    return "default";
+  }
+
+  function analyser() {
+    const question = document.getElementById("question").value.toLowerCase().trim();
+    const resultat = document.getElementById("resultat");
+
+    if (!question) {
+      resultat.style.display = "block";
+      resultat.className = "error";
+      resultat.innerHTML = `
+        <div class="result-header">
+          <span class="result-icon">⚠️</span>
+          <span class="result-title">Aucune entrée détectée</span>
+        </div>
+        <div class="piste-text">Veuillez décrire votre problème dans le champ de texte avant d'analyser.</div>
+      `;
+      return;
+    }
+
+    const cat = detectCategory(question);
+    const data = BASE[cat];
+    resultat.className = cat === "default" ? "warn" : "";
+
+    const cmdHTML = data.cmds.map(c => `<div class="cmd">${c}</div>`).join("");
+
+    resultat.style.display = "block";
+    resultat.innerHTML = `
+      <div class="result-header">
+        <span class="result-icon">${data.icon}</span>
+        <span class="result-title">${data.title}</span>
+        <span class="result-category">[${data.category}]</span>
+      </div>
+      <div class="result-section">
+        <div class="result-section-title">Commandes à tester</div>
+        <div class="cmd-list">${cmdHTML}</div>
+      </div>
+      <div class="result-section">
+        <div class="result-section-title">Pistes de diagnostic</div>
+        <div class="piste-text">${data.piste}</div>
+      </div>
+    `;
+
+    resultat.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function clearAll() {
+    document.getElementById("question").value = "";
+    const r = document.getElementById("resultat");
+    r.style.display = "none";
+    r.innerHTML = "";
+  }
+
+  function fillExample(keyword) {
+    const examples = {
+      ping:       "Je n'arrive pas à pinger ma machine, pas de connectivité réseau",
+      dns:        "Problème de résolution DNS, impossible d'accéder à un nom de domaine",
+      ssh:        "Connexion SSH refusée sur le port 22",
+      permission: "Permission denied lors de l'accès à un fichier",
+      serveur:    "Mon serveur est inaccessible, le service ne répond plus",
+      ip:         "Problème de configuration IP, adresse IP incorrecte",
+      bash:       "Mon script bash ne fonctionne pas, erreur de syntaxe",
+      firewall:   "Port bloqué par le firewall, règles iptables à vérifier"
+    };
+    document.getElementById("question").value = examples[keyword] || keyword;
+    document.getElementById("question").focus();
+  }
+
+  // Touche Entrée (Ctrl+Entrée) pour analyser
+  document.getElementById("question").addEventListener("keydown", function(e) {
+    if (e.ctrlKey && e.key === "Enter") analyser();
+  });
+</script>
+</body>
+</html>
