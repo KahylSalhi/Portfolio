@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant de diagnostic système et réseau</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .window {
+      max-width: 750px;
+      margin: auto;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    }
+
+    .titlebar {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .dots { display: flex; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+
+    .titlebar-label {
+      font-size: 12px;
+      color: #8b949e;
+      flex: 1;
+      text-align: center;
+    }
+
+    .body {
+      background: #0d1117;
+      padding: 30px 32px 36px;
+    }
+
+    .prompt {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 6px;
+    }
+    .prompt .user { color: #3fb950; }
+    .prompt .path { color: #79c0ff; }
+
+    h1 {
+      font-size: 20px;
+      color: #f0f6fc;
+      margin-bottom: 8px;
+    }
+    h1 span { color: #3fb950; }
+
+    .subtitle {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .input-label {
+      font-size: 12px;
+      color: #3fb950;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #c9d1d9;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: #3fb950; }
+    textarea::placeholder { color: #8b949e; }
+
+    button {
+      margin-top: 14px;
+      padding: 10px 22px;
+      background: #238636;
+      border: 1px solid #3fb950;
+      border-radius: 8px;
+      color: #f0f6fc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #3fb950;
+      color: #0d1117;
+      transform: translateY(-1px);
+    }
+
+    #resultat {
+      display: none;
+      margin-top: 24px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-left: 3px solid #3fb950;
+      border-radius: 8px;
+      padding: 20px;
+      white-space: pre-line;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #c9d1d9;
+      animation: fadein 0.3s ease;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #21262d;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #8b949e;
+    }
+
+    .footer a {
+      color: #79c0ff;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dots">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+    </div>
+    <div class="titlebar-label">assistant-diagnostic.sh — bash</div>
+  </div>
+
+  <div class="body">
+
+    <div class="prompt">
+      <span class="user">kahyl@DESKTOP-SIO</span>:<span class="path">~/outils</span>$ run assistant-diagnostic.sh
+    </div>
+
+    <h1><span>&gt;</span> Assistant de diagnostic système et réseau</h1>
+    <p class="subtitle">Décris un problème Linux ou réseau. L'assistant propose une piste de diagnostic.</p>
+
+    <div class="input-label">$ describe_problem --input</div>
+    <textarea id="question" placeholder="Exemple : je n'arrive pas à ping une machine..."></textarea>
+
+    <button onclick="analyser()">▶ Analyser</button>
+
+    <div id="resultat"></div>
+
+    <div class="footer">
+      <span>diagnostic-assistant v1.0 — BTS SIO SISR</span>
+      <a href="https://kahyl93.github.io/Portfolio/">← Retour au portfolio</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function analyser() {
+    const question = document.getElementById("question").value.toLowerCase();
+    const resultat = document.getElementById("resultat");
+
+    if (question.trim() === "") {
+      resultat.style.display = "block";
+      resultat.textContent = "Veuillez écrire un problème à analyser.";
+      return;
+    }
+
+    if (question.includes("ping")) {
+      resultat.textContent =
+`Problème détecté : connectivité réseau
+
+Commandes à tester :
+- ping 8.8.8.8
+- ip addr
+- ip route
+
+Pistes :
+Vérifiez l'adresse IP, le masque, la passerelle et la connexion entre les machines.`;
+
+    } else if (question.includes("dns")) {
+      resultat.textContent =
+`Problème détecté : résolution DNS
+
+Commandes à tester :
+- nslookup google.com
+- ping google.com
+- ping 8.8.8.8
+
+Pistes :
+Si le ping vers une adresse IP fonctionne mais pas vers un nom de domaine, le problème vient sûrement du DNS.`;
+
+    } else if (question.includes("permission") || question.includes("denied")) {
+      resultat.textContent =
+`Problème détecté : droits Linux
+
+Commandes à tester :
+- ls -l
+- chmod
+- chown
+
+Pistes :
+Vérifiez les droits du fichier ou du dossier. L'utilisateur n'a peut-être pas les permissions nécessaires.`;
+
+    } else if (question.includes("ssh")) {
+      resultat.textContent =
+`Problème détecté : connexion SSH
+
+Commandes à tester :
+- systemctl status ssh
+- ping adresse_ip
+- ssh utilisateur@adresse_ip
+
+Pistes :
+Vérifiez que le service SSH est actif, que l'adresse IP est correcte et que le port 22 est accessible.`;
+
+    } else if (question.includes("ip")) {
+      resultat.textContent =
+`Problème détecté : configuration IP
+
+Commandes à tester :
+- ip addr
+- ip route
+- ipconfig
+
+Pistes :
+Vérifiez l'adresse IP, le masque, la passerelle et l'interface réseau utilisée.`;
+
+    } else if (question.includes("serveur")) {
+      resultat.textContent =
+`Problème détecté : serveur inaccessible
+
+Commandes à tester :
+- ping adresse_serveur
+- systemctl status nom_du_service
+- netstat -tuln
+
+Pistes :
+Vérifiez si le serveur est allumé, connecté au réseau et si le service concerné fonctionne.`;
+
+    } else {
+      resultat.textContent =
+`Problème non reconnu précisément
+
+Commandes utiles :
+- ping
+- ip addr
+- ip route
+- ls -l
+- systemctl status
+
+Pistes :
+Commencez par identifier si le problème vient du réseau, du système, des droits ou d'un service.`;
+    }
+
+    resultat.style.display = "block";
+  }
+</script>
+
+</body>
+</html>
