@@ -566,3 +566,30 @@ font-size: 2rem;
   color: var(--muted);
   line-height: 1.7;
 }
+.niveau {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.niveau.debutant {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.niveau.intermediaire {
+  background: rgba(243, 156, 18, 0.15);
+  color: #f39c12;
+  border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+.niveau.avance {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
