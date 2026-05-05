@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script de diagnostic Linux — Portfolio Kahyl Salhi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="logo">&lt;<span>PORTFOLIO-KAHYL_SALHI</span>/&gt;</div>
+      <div class="nav-links">
+        <a href="index.html#projects">← Retour aux projets</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 60px 0;">
+
+    <!-- EN-TÊTE -->
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <div class="tags" style="margin-bottom: 16px;">
+        <span class="tag">Linux</span>
+        <span class="tag">Bash</span>
+        <span class="tag">WSL</span>
+        <span class="tag">Diagnostic système</span>
+      </div>
+      <h1 style="font-size: 1.8rem; margin-bottom: 12px;">Script de diagnostic système Linux</h1>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Script Bash réalisé sous Linux via WSL permettant d'analyser automatiquement l'état 
+        d'une machine : nom de la machine, adresses IP, connectivité réseau, utilisation 
+        du disque, de la RAM et les processus actifs.
+      </p>
+    </div>
+
+    <!-- POURQUOI CE PROJET -->
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 12px; color: var(--primary);">Pourquoi ce projet ?</h2>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Dans le cadre de ma formation BTS SIO option SISR, j'ai travaillé sur Linux via WSL.
+        L'objectif était de créer un script Bash qui automatise le diagnostic d'un système —
+        une tâche très courante en SISR lors d'interventions techniques sur des machines Linux.
+        Plutôt que de taper les commandes une par une, le script les regroupe et les exécute 
+        automatiquement en une seule commande.
+      </p>
+    </div>
+
+    <!-- CE QUE FAIT LE SCRIPT -->
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que fait le script</h2>
+      <div class="about-list">
+        <div class="about-item">
+          <h3>🖥 Nom de la machine</h3>
+          <p>Affiche le nom de la machine avec la commande <code>hostname</code>.</p>
+        </div>
+        <div class="about-item">
+          <h3>🌐 Adresse IP</h3>
+          <p>Récupère les adresses IP de toutes les interfaces réseau avec <code>ip a | grep inet</code>.</p>
+        </div>
+        <div class="about-item">
+          <h3>📡 Test réseau</h3>
+          <p>Teste la connectivité internet en envoyant 2 paquets vers 8.8.8.8 avec <code>ping -c 2 8.8.8.8</code>.</p>
+        </div>
+        <div class="about-item">
+          <h3>💾 Utilisation du disque</h3>
+          <p>Affiche l'espace disque disponible sur chaque partition avec <code>df -h</code>.</p>
+        </div>
+        <div class="about-item">
+          <h3>🧠 Utilisation de la RAM</h3>
+          <p>Affiche la mémoire totale, utilisée et disponible avec <code>free -h</code>.</p>
+        </div>
+        <div class="about-item">
+          <h3>⚙️ Processus actifs</h3>
+          <p>Liste les 5 premiers processus en cours d'exécution avec <code>ps aux | head -n 5</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAPTURES -->
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 20px; color: var(--primary);">Captures du projet</h2>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Code du script dans nano</p>
+        <img src="images/projet-linux-Diag-code.png" alt="Code du script diagnostic"
+          style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Exécution — nom de machine, IP et test ping</p>
+        <img src="images/projet-linux-test.png" alt="Exécution du script"
+          style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Résultat — utilisation disque et RAM</p>
+        <img src="images/projet-linux-test1.png" alt="Disque et RAM"
+          style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div>
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Résultat — processus actifs et fin du diagnostic</p>
+        <img src="images/projet-linux-test2.png" alt="Processus actifs"
+          style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+    </div>
+
+    <!-- CE QUE J'AI APPRIS -->
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que j'ai appris</h2>
+      <div class="about-list">
+        <div class="about-item">
+          <h3>Scripting Bash</h3>
+          <p>Écriture d'un script avec des commandes enchaînées et des messages d'affichage avec echo.</p>
+        </div>
+        <div class="about-item">
+          <h3>Commandes système Linux</h3>
+          <p>Utilisation de commandes comme ip, ping, df, free et ps pour analyser l'état d'une machine.</p>
+        </div>
+        <div class="about-item">
+          <h3>Environnement WSL</h3>
+          <p>Utilisation de Windows Subsystem for Linux pour travailler dans un environnement Linux depuis Windows.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RETOUR -->
+    <div style="text-align: center; margin-top: 10px;">
+      <a href="index.html#projects" class="btn btn-secondary">← Retour aux projets</a>
+    </div>
+
+  </main>
+
+</body>
+</html>
