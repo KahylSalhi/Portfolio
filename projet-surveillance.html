@@ -1,1 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script de surveillance réseau — Portfolio Kahyl Salhi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="logo">&lt;<span>PORTFOLIO-KAHYL_SALHI</span>/&gt;</div>
+      <div class="nav-links">
+        <a href="index.html#projects">← Retour aux projets</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 60px 0;">
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <div class="tags" style="margin-bottom: 16px;">
+        <span class="tag">Linux</span>
+        <span class="tag">Bash</span>
+        <span class="tag">Réseau</span>
+        <span class="tag">Surveillance</span>
+      </div>
+      <h1 style="font-size: 1.8rem; margin-bottom: 12px;">Script de surveillance réseau</h1>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Script Bash réalisé sous Linux via WSL permettant de tester la disponibilité de plusieurs machines.
+        Le script envoie un ping à chaque adresse et affiche le résultat avec un code couleur.
+      </p>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 12px; color: var(--primary);">Pourquoi ce projet ?</h2>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Ce projet s’inscrit dans la continuité du script de diagnostic Linux.
+        L’objectif est de surveiller rapidement plusieurs machines ou adresses réseau.
+        Ce type de script peut aider un technicien à repérer les machines actives et celles qui ne répondent pas.
+      </p>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que fait le script</h2>
+
+      <div class="about-list">
+        <div class="about-item">
+          <h3>📋 Liste de machines</h3>
+          <p>Le script utilise un tableau Bash contenant plusieurs adresses IP et noms de domaine à tester.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>🔁 Boucle for</h3>
+          <p>La boucle <code>for</code> parcourt chaque machine de la liste une par une.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>📡 Test avec ping</h3>
+          <p>La commande <code>ping -c 1</code> teste si chaque machine répond au réseau.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>✅ Résultat du test</h3>
+          <p>La variable <code>$?</code> permet de récupérer le résultat de la commande ping.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>🟢 Affichage en vert</h3>
+          <p>Si la machine répond, le script affiche qu’elle est active.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>🔴 Affichage en rouge</h3>
+          <p>Si la machine ne répond pas, le script affiche qu’elle est injoignable.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 20px; color: var(--primary);">Captures du projet</h2>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Code du script dans nano</p>
+        <img src="images/projet-surveillance-code.png" alt="Code du script de surveillance"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div>
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Exécution du script avec résultats en couleur</p>
+        <img src="images/projet-surveillance-resultat.png" alt="Résultat du script de surveillance"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que j’ai appris</h2>
+
+      <div class="about-list">
+        <div class="about-item">
+          <h3>Boucle for</h3>
+          <p>Utilisation d’une boucle pour parcourir une liste de machines automatiquement.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Commande ping</h3>
+          <p>Utilisation de <code>ping</code> pour tester la disponibilité d’une machine sur le réseau.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Codes de retour</h3>
+          <p>Compréhension de <code>$?</code>, qui permet de savoir si une commande a réussi ou échoué.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Affichage en couleur</h3>
+          <p>Utilisation des codes ANSI pour afficher les machines actives en vert et les machines injoignables en rouge.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px;">
+      <a href="index.html#projects" class="btn btn-secondary">← Retour aux projets</a>
+    </div>
+
+  </main>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+
+    revealElements.forEach((el) => {
+      el.classList.add('visible');
+    });
+  </script>
+
+</body>
+</html>
