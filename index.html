@@ -526,37 +526,7 @@ e.preventDefault();
 successMsg.style.display = 'block';
 form.reset();
 });
-
-const images = [
-  {
-    src: "images/bash-1.jpeg",
-    text: "Script Bash réalisé en TP."
-  },
-  {
-    src: "images/reseau-1.png",
-    text: "Configuration réseau avec Packet Tracer."
-  },
-  {
-    src: "images/reseau-2.png",
-    text: "Test de ping."
-  }
-];
-
-let index = 0;
-
-function changeSlide(direction) {
-  index += direction;
-
-  if (index < 0) index = images.length - 1;
-  if (index >= images.length) index = 0;
-
-  document.getElementById("carouselImage").src = images[index].src;
-  document.getElementById("carouselText").textContent = images[index].text;
-}
-function autoSlide() {
-  changeSlide(1);
-}
-setInterval(autoSlide, 10000);  
+  
 </script>
 </body>
 </html>
