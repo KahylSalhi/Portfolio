@@ -45,7 +45,7 @@ function afficher(criteres, score) {
 
     <div style="font-size: 13px; color: #6b6860; margin-bottom: 8px;">Critères :</div>
 
-    <div>${critere(criteres.longueur,  "Au moins 8 caractères")}</div>
+    <div>${critere(criteres.longueur,  "Au moins 12 caractères")}</div>
     <div>${critere(criteres.majuscule, "Une lettre majuscule")}</div>
     <div>${critere(criteres.minuscule, "Une lettre minuscule")}</div>
     <div>${critere(criteres.chiffre,   "Un chiffre")}</div>
