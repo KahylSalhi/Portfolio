@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testeur de mot de passe — Portfolio Kahyl Salhi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="logo">&lt;<span>PORTFOLIO-KAHYL_SALHI</span>/&gt;</div>
+      <div class="nav-links">
+        <a href="index.html#projects">← Retour aux projets</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 60px 0;">
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <div class="tags" style="margin-bottom: 16px;">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Sécurité</span>
+      </div>
+      <h1 style="font-size: 1.8rem; margin-bottom: 12px;">Testeur de mot de passe</h1>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Projet web permettant d’évaluer la robustesse d’un mot de passe.
+        L’application analyse plusieurs critères comme la longueur, les majuscules,
+        les chiffres et les caractères spéciaux.
+      </p>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 12px; color: var(--primary);">Pourquoi ce projet ?</h2>
+      <p style="color: var(--muted); line-height: 1.7;">
+        Ce projet permet de mieux comprendre les bases de la sécurité des mots de passe.
+        L’objectif est de montrer qu’un mot de passe fort doit être assez long et contenir
+        différents types de caractères.
+      </p>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que fait le projet</h2>
+
+      <div class="about-list">
+        <div class="about-item">
+          <h3>🔐 Saisie du mot de passe</h3>
+          <p>L’utilisateur entre un mot de passe dans un champ prévu à cet effet.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>📏 Vérification de la longueur</h3>
+          <p>Le programme vérifie si le mot de passe contient assez de caractères.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>🔠 Analyse des caractères</h3>
+          <p>Le script vérifie la présence de minuscules, majuscules, chiffres et caractères spéciaux.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>📊 Score de sécurité</h3>
+          <p>Un score est calculé selon les critères validés par le mot de passe.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>🟢 Niveau affiché</h3>
+          <p>Le résultat indique si le mot de passe est faible, moyen ou fort.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>💡 Conseils utilisateur</h3>
+          <p>L’application peut aider l’utilisateur à améliorer son mot de passe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 20px; color: var(--primary);">Captures du projet</h2>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Interface du testeur de mot de passe</p>
+        <img src="images/projet-mdp-interface.png" alt="Interface du testeur de mot de passe"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Exemple avec un mot de passe faible</p>
+        <img src="images/projet-mdp-faible.png" alt="Mot de passe faible"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Exemple avec un mot de passe fort</p>
+        <img src="images/projet-mdp-fort.png" alt="Mot de passe fort"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+
+      <div>
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">Extrait du code JavaScript</p>
+        <img src="images/projet-mdp-code.png" alt="Code JavaScript du testeur"
+          style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+    </div>
+
+    <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px; color: var(--primary);">Ce que j’ai appris</h2>
+
+      <div class="about-list">
+        <div class="about-item">
+          <h3>Conditions JavaScript</h3>
+          <p>Utilisation de conditions pour tester plusieurs critères de sécurité.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Expressions régulières</h3>
+          <p>Utilisation de règles pour détecter les majuscules, les chiffres et les caractères spéciaux.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Manipulation du DOM</h3>
+          <p>Affichage dynamique du résultat selon le mot de passe saisi par l’utilisateur.</p>
+        </div>
+
+        <div class="about-item">
+          <h3>Sensibilisation sécurité</h3>
+          <p>Compréhension des bonnes pratiques liées à la création d’un mot de passe sécurisé.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px;">
+      <a href="index.html#projects" class="btn btn-secondary">← Retour aux projets</a>
+    </div>
+
+  </main>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+
+    revealElements.forEach((el) => {
+      el.classList.add('visible');
+    });
+  </script>
+
+</body>
+</html>
