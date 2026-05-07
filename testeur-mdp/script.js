@@ -12,7 +12,7 @@ input.addEventListener("input",function(){
 
 function analyser(mdp){
     const criteres={
-        longueur:mdp.length>=8,
+        longueur:mdp.length>=12,
         majuscule:/[A-Z]/.test(mdp),
         minuscule:/[a-z]/.test(mdp),
         chiffre:/\d/.test(mdp),
