@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VigilFlow — Monitoring IT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <aside class="sidebar">
+    <div class="logo">Vigil<span>Flow</span></div>
+
+    <nav>
+      <a class="active" href="#">Dashboard</a>
+      <a href="#">Machines</a>
+      <a href="#">Incidents</a>
+      <a href="#">Monitoring</a>
+      <a href="#">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div id="notifications"></div>
+      <div>
+        <h1>Dashboard</h1>
+        <p>Surveillance simple de l’infrastructure IT.</p>
+      </div>
+
+      <div id="userArea">
+  <a href="login.html" class="btn">Connexion</a>
+</div>
+    </header>
+
+    <section class="stats">
+      <div class="card">
+        <p>Machines surveillées</p>
+        <h2 id="totalMachines">0</h2>
+      </div>
+
+      <div class="card success">
+        <p>En ligne</p>
+        <h2 id="onlineMachines">0</h2>
+      </div>
+
+      <div class="card danger">
+        <p>Hors ligne</p>
+        <h2 id="offlineMachines">0</h2>
+      </div>
+
+      <div class="card warning">
+        <p>Alertes critiques</p>
+        <h2 id="warningMachines">0</h2>
+      </div>
+    </section>
+
+    <section class="panel form-panel">
+
+  <h2>Ajouter une machine</h2>
+
+  <div class="form-grid">
+
+    <input type="text" id="nomMachine" placeholder="Nom de la machine">
+
+    <input type="text" id="ipMachine" placeholder="Adresse IP">
+
+    <select id="typeMachine">
+      <option>Serveur</option>
+      <option>Routeur</option>
+      <option>Switch</option>
+      <option>Imprimante</option>
+      <option>NAS</option>
+    </select>
+
+   <button class="btn" onclick="ajouterMachine()">Ajouter</button>
+  </div>
+
+</section>
+
+<section class="panel">
+
+  <h2>État de l’infrastructure</h2>
+
+  <div class="chart-container">
+  <canvas id="statusChart" width="220" height="220"></canvas>
+  </div>
+
+</section>
+
+<section class="content-grid">
+      <div class="panel">
+        <h2>Équipements</h2>
+        <input 
+  type="text" 
+  id="searchInput" 
+  placeholder="Rechercher une machine..."
+  oninput="afficherMachines()"
+  class="search-input">
+
+  <select id="statusFilter" class="search-input" onchange="afficherMachines()">
+  <option value="all">Tous les statuts</option>
+  <option value="online">Online</option>
+  <option value="offline">Offline</option>
+  <option value="warning">Warning</option>
+</select>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Machine</th>
+              <th>IP</th>
+              <th>Type</th>
+              <th>Dernier test</th>
+              <th>Statut</th>
+              <th>Gestion</th>
+              <th>Test</th>
+            </tr>
+          </thead>
+
+          <tbody id="machinesTable"></tbody>
+
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Incidents récents</h2>
+        
+        <div id="incidentsList"></div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
