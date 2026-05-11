@@ -1,1 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projet Cisco RIP — Portfolio</title>
 
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+
+    <div class="logo">
+      &lt;<span>PORTFOLIO-KAHYL_SALHI</span>/&gt;
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html#projects">
+        ← Retour aux projets
+      </a>
+    </div>
+
+  </div>
+</nav>
+
+<main class="container" style="padding: 60px 0;">
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <div class="tags" style="margin-bottom: 16px;">
+      <span class="tag">Cisco</span>
+      <span class="tag">Packet Tracer</span>
+      <span class="tag">RIP v2</span>
+      <span class="tag">CLI IOS</span>
+      <span class="tag">Réseau</span>
+    </div>
+
+    <h1 style="margin-bottom: 16px;">
+      Infrastructure Cisco — Routage RIP
+    </h1>
+
+    <p style="line-height: 1.7; color: var(--muted);">
+
+      Projet réalisé sous Cisco Packet Tracer consistant à concevoir une
+      infrastructure réseau complète avec plusieurs routeurs et réseaux
+      interconnectés.
+
+      L’objectif était de permettre la communication entre plusieurs
+      machines grâce au routage dynamique RIP v2.
+
+    </p>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 18px; color: var(--primary);">
+      Objectifs du projet
+    </h2>
+
+    <div class="about-list">
+
+      <div class="about-item">
+        <h3>🖧 Création de topologie réseau</h3>
+        <p>
+          Mise en place de 3 routeurs Cisco 2911 et de plusieurs réseaux locaux.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>🌐 Adressage IP</h3>
+        <p>
+          Configuration des interfaces réseau avec des plages IP privées.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>🔁 Routage dynamique RIP v2</h3>
+        <p>
+          Configuration du protocole RIP afin de permettre
+          l’échange automatique des routes entre les routeurs.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>💻 Tests réseau</h3>
+        <p>
+          Vérification de la connectivité avec des commandes ping
+          entre les différents postes.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Topologie réseau
+    </h2>
+
+    <img
+      src="images/topologie-cisco.png"
+      alt="Topologie Cisco"
+      style="width: 100%; border-radius: 14px; border: 1px solid var(--border);"
+    >
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Configuration RIP v2
+    </h2>
+
+<pre style="
+background:#0f172a;
+padding:20px;
+border-radius:12px;
+overflow:auto;
+color:white;
+">
+
+router rip
+version 2
+
+network 192.168.1.0
+network 10.0.0.0
+
+no auto-summary
+
+</pre>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Validation de la connectivité
+    </h2>
+
+    <p style="margin-bottom: 18px; color: var(--muted);">
+      Vérification des échanges réseau entre les différents PC via des commandes ping.
+    </p>
+
+    <img
+      src="images/ping-cisco.png"
+      alt="Ping Cisco"
+      style="width: 100%; border-radius: 14px; border: 1px solid var(--border);"
+    >
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Compétences développées
+    </h2>
+
+    <div class="about-list">
+
+      <div class="about-item">
+        <h3>CLI Cisco IOS</h3>
+        <p>
+          Utilisation des commandes IOS pour configurer les interfaces,
+          les routes et les protocoles.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>Réseaux IP</h3>
+        <p>
+          Compréhension des sous-réseaux, des masques et des communications inter-réseaux.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>Diagnostic réseau</h3>
+        <p>
+          Analyse des états d’interfaces et résolution de problèmes réseau.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>Routage dynamique</h3>
+        <p>
+          Compréhension du fonctionnement du protocole RIP v2.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+document.querySelectorAll('.reveal').forEach((el) => {
+  el.classList.add('visible');
+});
+</script>
+
+</body>
+</html>
