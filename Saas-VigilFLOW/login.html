@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion — VigilFlow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
 
+  <div class="login-card">
+    <h1>Vigil<span>Flow</span></h1>
+    <p>Connectez-vous à votre espace de monitoring.</p>
+
+   <form id="loginForm">
+  <input type="email" id="email" placeholder="Adresse email" required>
+  <input type="password" id="password" placeholder="Mot de passe" required>
+  <button class="btn" type="submit">Se connecter</button>
+</form>
+
+<script>
+  const loginForm = document.getElementById("loginForm");
+
+  loginForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+
+    const user = {
+      email: email,
+      connected: true
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    window.location.href = "index.html";
+  });
+</script>
+    </div>
+
+</body>
+</html>
