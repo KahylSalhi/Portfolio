@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projet Assistant Diagnostic — Portfolio</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+
+    <div class="logo">
+      &lt;<span>PORTFOLIO-KAHYL_SALHI</span>/&gt;
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html#projects">
+        ← Retour aux projets
+      </a>
+    </div>
+
+  </div>
+</nav>
+
+<main class="container" style="padding: 60px 0;">
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <div class="tags" style="margin-bottom: 16px;">
+      <span class="tag">HTML</span>
+      <span class="tag">CSS</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">Linux</span>
+      <span class="tag">Réseau</span>
+      <span class="tag">BTS SIO SISR</span>
+    </div>
+
+    <h1 style="margin-bottom: 16px;">
+      Assistant de diagnostic système et réseau
+    </h1>
+
+    <p style="line-height: 1.7; color: var(--muted);">
+      Projet web interactif permettant d’aider un utilisateur à identifier
+      l’origine d’un problème informatique simple.
+
+      L’objectif était de créer une interface qui analyse une description saisie
+      par l’utilisateur et propose des pistes de diagnostic avec des commandes
+      Linux et réseau adaptées.
+    </p>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 18px; color: var(--primary);">
+      Objectifs du projet
+    </h2>
+
+    <div class="about-list">
+
+      <div class="about-item">
+        <h3>🧠 Analyse de problème</h3>
+        <p>
+          Création d’un assistant capable de reconnaître certains mots-clés
+          dans une description utilisateur.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>💻 Interface web</h3>
+        <p>
+          Réalisation d’une interface inspirée d’un terminal Linux pour rester
+          cohérent avec le thème système et réseau.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>⚙️ Interaction JavaScript</h3>
+        <p>
+          Utilisation de conditions pour afficher automatiquement un diagnostic
+          selon le problème saisi.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>🌐 Diagnostic réseau</h3>
+        <p>
+          Mise en avant de commandes comme ping, ip addr, ip route, nslookup,
+          ssh ou systemctl.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Interface de l’assistant
+    </h2>
+
+    <p style="margin-bottom: 18px; color: var(--muted);">
+      L’utilisateur peut saisir une description de problème dans une zone de texte.
+      L’assistant analyse ensuite la demande et affiche une proposition de diagnostic.
+    </p>
+
+    <img
+      src="images/assistant-accueil.png"
+      alt="Interface assistant diagnostic"
+      style="
+        width: 85%;
+        max-width: 900px;
+        display: block;
+        margin: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        "
+    >
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Exemple de diagnostic
+    </h2>
+
+    <p style="margin-bottom: 18px; color: var(--muted);">
+      Exemple avec un problème de connectivité réseau. L’assistant propose
+      des commandes utiles pour vérifier la connexion, la passerelle, l’adresse IP
+      et la résolution DNS.
+    </p>
+
+    <img
+      src="images/assistant-resultat.png"
+      alt="Résultat diagnostic réseau"
+      style="
+        width: 85%;
+        max-width: 900px;
+        display: block;
+        margin: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        "
+    >
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Fonctionnalités réalisées
+    </h2>
+
+    <div class="about-list">
+
+      <div class="about-item">
+        <h3>🔎 Détection par mots-clés</h3>
+        <p>
+          L’assistant reconnaît plusieurs catégories de problèmes comme le DNS,
+          le ping, SSH, les permissions, le firewall ou DHCP.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>📋 Affichage de commandes</h3>
+        <p>
+          Pour chaque problème détecté, des commandes adaptées sont affichées
+          pour orienter le diagnostic.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>🧹 Bouton effacer</h3>
+        <p>
+          Ajout d’un bouton permettant de vider la zone de texte et de masquer
+          le résultat affiché.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>🖥️ Design terminal</h3>
+        <p>
+          Mise en place d’un design sombre rappelant une fenêtre de terminal
+          Linux afin de rendre le projet plus original.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card reveal" style="padding: 30px; margin-bottom: 24px;">
+
+    <h2 style="margin-bottom: 20px; color: var(--primary);">
+      Compétences développées
+    </h2>
+
+    <div class="about-list">
+
+      <div class="about-item">
+        <h3>HTML / CSS</h3>
+        <p>
+          Structuration d’une page web et création d’une interface propre,
+          lisible et adaptée au thème du projet.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>JavaScript</h3>
+        <p>
+          Utilisation de fonctions, conditions, récupération de saisie utilisateur
+          et affichage dynamique de résultats.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>Commandes Linux</h3>
+        <p>
+          Révision de commandes utiles comme chmod, systemctl, journalctl,
+          ls -l ou bash -x.
+        </p>
+      </div>
+
+      <div class="about-item">
+        <h3>Diagnostic réseau</h3>
+        <p>
+          Compréhension des étapes de diagnostic : tester la connectivité,
+          vérifier l’adressage IP, le routage, le DNS et les services.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+document.querySelectorAll('.reveal').forEach((el) => {
+  el.classList.add('visible');
+});
+</script>
+
+</body>
+</html>
