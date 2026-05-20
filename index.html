@@ -477,7 +477,9 @@ Je suis actuellement en BTS SIO et ce portfolio me permet de mettre en valeur mo
 <div class="about-list">
 <div class="about-item">
 <h3>Email</h3>
-<p>kahylsalhi@gmail.com</p>
+<a href="mailto:kahylsalhi@gmail.com">
+kahylsalhi@gmail.com
+</a>
 </div>
 <div class="about-item">
 <h3>GitHub</h3>
@@ -492,12 +494,25 @@ Je suis actuellement en BTS SIO et ce portfolio me permet de mettre en valeur mo
 
 <div class="contact-card reveal">
 <h3>Envoyer un message</h3>
-<form id="contactForm">
-<input type="text" placeholder="Votre nom" required>
-<input type="email" placeholder="Votre email" required>
-<textarea placeholder="Votre message" required></textarea>
-<button type="submit" class="btn btn-primary">Envoyer</button>
-<div class="success-msg" id="successMsg">Message envoyé avec succès! Merci de m'avoir contacté.</div>
+<form 
+action="https://formsubmit.co/kahylsalhi@gmail.com" 
+method="POST"
+id="contactForm"
+>
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_subject" value="Nouveau message Portfolio BTS SIO">
+
+<input type="text" name="nom" placeholder="Votre nom" required>
+
+<input type="email" name="email" placeholder="Votre email" required>
+
+<textarea name="message" placeholder="Votre message" required></textarea>
+
+<button type="submit" class="btn btn-primary">
+Envoyer
+</button>
+
 </form>
 </div>
 </div>
@@ -575,15 +590,6 @@ project.classList.add('hidden');
 }
 });
 });
-});
-
-const form = document.getElementById('contactForm');
-const successMsg = document.getElementById('successMsg');
-
-form.addEventListener('submit', function (e) {
-e.preventDefault();
-successMsg.style.display = 'block';
-form.reset();
 });
   
 </script>
